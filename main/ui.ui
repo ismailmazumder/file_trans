@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>744</width>
-    <height>533</height>
+    <width>948</width>
+    <height>680</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -19,7 +19,7 @@
      <rect>
       <x>10</x>
       <y>10</y>
-      <width>631</width>
+      <width>591</width>
       <height>31</height>
      </rect>
     </property>
@@ -27,7 +27,7 @@
    <widget class="QPushButton" name="scan_button">
     <property name="geometry">
      <rect>
-      <x>650</x>
+      <x>610</x>
       <y>10</y>
       <width>71</width>
       <height>41</height>
@@ -35,6 +35,78 @@
     </property>
     <property name="text">
      <string>scan</string>
+    </property>
+   </widget>
+   <widget class="QCheckBox" name="sellectall">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>50</y>
+      <width>41</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>All</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label">
+    <property name="geometry">
+     <rect>
+      <x>40</x>
+      <y>60</y>
+      <width>791</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>File Name                                                                                   Size             Path</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pushButton">
+    <property name="geometry">
+     <rect>
+      <x>700</x>
+      <y>600</y>
+      <width>141</width>
+      <height>51</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>move</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_2">
+    <property name="geometry">
+     <rect>
+      <x>690</x>
+      <y>0</y>
+      <width>301</width>
+      <height>71</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Select Your drive which is out of storage</string>
+    </property>
+   </widget>
+   <widget class="QComboBox" name="comboBox_movepath">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>610</y>
+      <width>671</width>
+      <height>31</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QTableWidget" name="tableWidget">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>90</y>
+      <width>871</width>
+      <height>501</height>
+     </rect>
     </property>
    </widget>
   </widget>

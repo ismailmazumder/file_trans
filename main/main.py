@@ -17,35 +17,94 @@ def partition_list():
     partition_list = [partition.strip() for drive in drives for partition in drive.split(":") if partition.strip()]
     partition_list[0] = partition_list[0].strip("Name  \n\n")
     return partition_list
+def file_list(drive):
+    user_name = os.getlogin()
+    path = f"{drive}\\Users\\{user_name}\\AppData"
+
+    def convert_bytes_to_gb(bytes):
+        gb = bytes / (1024 ** 3)  # 1024 bytes = 1 kilobyte, 1024 kilobytes = 1 megabyte, 1024 megabytes = 1 gigabyte
+        return gb
+
+    def list_files_by_size(directory):
+        files = []
+        for root, _, filenames in os.walk(directory):
+            for filename in filenames:
+                filepath = os.path.join(root, filename)
+                if os.path.isfile(filepath):
+                    filesize = os.path.getsize(filepath)
+                    files.append((filepath, filesize))
+
+        files.sort(key=lambda x: x[1])
+        return files
+
+    if __name__ == "__main__":
+        files = list_files_by_size(path)
+
+        print("Files on C drive sorted by size:")
+        for file, size in files:
+            size_gb = convert_bytes_to_gb(size)
+            print(f"{file}: {size_gb:.2f} GB")
+
+
 
 class Ui_Drive(object):
     def setupUi(self, Drive):
         Drive.setObjectName("Drive")
-        Drive.resize(744, 533)
+        Drive.resize(948, 680)
         self.dockWidgetContents = QtWidgets.QWidget()
         self.dockWidgetContents.setObjectName("dockWidgetContents")
         self.comboBox = QtWidgets.QComboBox(parent=self.dockWidgetContents)
-        self.comboBox.setGeometry(QtCore.QRect(10, 10, 631, 31))
+        self.comboBox.setGeometry(QtCore.QRect(10, 10, 591, 31))
         self.comboBox.setObjectName("comboBox")
         self.scan_button = QtWidgets.QPushButton(parent=self.dockWidgetContents)
-        self.scan_button.setGeometry(QtCore.QRect(650, 10, 71, 41))
+        self.scan_button.setGeometry(QtCore.QRect(610, 10, 71, 41))
         self.scan_button.setObjectName("scan_button")
-        self.scan_button.clicked.connect(self.button_click)
+        self.sellectall = QtWidgets.QCheckBox(parent=self.dockWidgetContents)
+        self.sellectall.setGeometry(QtCore.QRect(0, 50, 41, 41))
+        self.sellectall.setObjectName("sellectall")
+        self.label = QtWidgets.QLabel(parent=self.dockWidgetContents)
+        self.label.setGeometry(QtCore.QRect(40, 60, 791, 21))
+        self.label.setObjectName("label")
+        self.pushButton = QtWidgets.QPushButton(parent=self.dockWidgetContents)
+        self.pushButton.setGeometry(QtCore.QRect(700, 600, 141, 51))
+        self.pushButton.setObjectName("pushButton")
+        self.label_2 = QtWidgets.QLabel(parent=self.dockWidgetContents)
+        self.label_2.setGeometry(QtCore.QRect(690, 0, 301, 71))
+        self.label_2.setObjectName("label_2")
+        self.comboBox_movepath = QtWidgets.QComboBox(parent=self.dockWidgetContents)
+        self.comboBox_movepath.setGeometry(QtCore.QRect(10, 610, 671, 31))
+        self.comboBox_movepath.setObjectName("comboBox_movepath")
+        self.tableWidget = QtWidgets.QTableWidget(parent=self.dockWidgetContents)
+        self.tableWidget.setGeometry(QtCore.QRect(10, 90, 871, 501))
+        self.tableWidget.setObjectName("tableWidget")
+        self.tableWidget.setColumnCount(4)
+        self.tableWidget.setRowCount(100)
         Drive.setWidget(self.dockWidgetContents)
+        self.scan_button.clicked.connect(self.button_click)
+
+
 
         self.retranslateUi(Drive)
         QtCore.QMetaObject.connectSlotsByName(Drive)
+
         self.comboBox.addItem("Select your drive")
         list = partition_list()
         self.comboBox.addItems(list)
-    def retranslateUi(self, Drive):
-        _translate = QtCore.QCoreApplication.translate
-        Drive.setWindowTitle(_translate("Drive", "DockWidget"))
-        self.scan_button.setText(_translate("Drive", "scan"))
+
     def button_click(self):
         selected_drive = self.comboBox.currentText()
         print(selected_drive)
         pass
+
+    def retranslateUi(self, Drive):
+        _translate = QtCore.QCoreApplication.translate
+        Drive.setWindowTitle(_translate("Drive", "DockWidget"))
+        self.scan_button.setText(_translate("Drive", "scan"))
+        self.sellectall.setText(_translate("Drive", "All"))
+        self.label.setText(_translate("Drive", "File Name                                                                                   Size             Path"))
+        self.pushButton.setText(_translate("Drive", "move"))
+        self.label_2.setText(_translate("Drive", "Select Your drive which is out of storage"))
+
 
 if __name__ == "__main__":
     import sys

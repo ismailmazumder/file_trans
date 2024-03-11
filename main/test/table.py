@@ -7,6 +7,16 @@
 
 
 from PyQt6 import QtCore, QtGui, QtWidgets
+import os
+import re
+def partition_list():
+    regex = r"([^\\s]*:)"
+    driver = os.popen("wmic logicaldisk get name").read()
+    drives = re.findall(regex, driver)
+
+    partition_list = [partition.strip() for drive in drives for partition in drive.split(":") if partition.strip()]
+    partition_list[0] = partition_list[0].strip("Name  \n\n")
+    return partition_list
 
 
 class Ui_Drive(object):
@@ -21,26 +31,12 @@ class Ui_Drive(object):
         self.scan_button = QtWidgets.QPushButton(parent=self.dockWidgetContents)
         self.scan_button.setGeometry(QtCore.QRect(610, 10, 71, 41))
         self.scan_button.setObjectName("scan_button")
-        self.listWidget_name = QtWidgets.QListWidget(parent=self.dockWidgetContents)
-        self.listWidget_name.setGeometry(QtCore.QRect(30, 100, 321, 491))
-        self.listWidget_name.setObjectName("listWidget_name")
-        self.listwid_size = QtWidgets.QTableWidget(parent=self.dockWidgetContents)
-        self.listwid_size.setGeometry(QtCore.QRect(361, 100, 51, 491))
-        self.listwid_size.setObjectName("listwid_size")
-        self.listwid_size.setColumnCount(0)
-        self.listwid_size.setRowCount(0)
         self.sellectall = QtWidgets.QCheckBox(parent=self.dockWidgetContents)
         self.sellectall.setGeometry(QtCore.QRect(0, 50, 41, 41))
         self.sellectall.setObjectName("sellectall")
-        self.listWidget = QtWidgets.QListWidget(parent=self.dockWidgetContents)
-        self.listWidget.setGeometry(QtCore.QRect(0, 100, 21, 491))
-        self.listWidget.setObjectName("listWidget")
         self.label = QtWidgets.QLabel(parent=self.dockWidgetContents)
         self.label.setGeometry(QtCore.QRect(40, 60, 791, 21))
         self.label.setObjectName("label")
-        self.listWidget_path = QtWidgets.QListWidget(parent=self.dockWidgetContents)
-        self.listWidget_path.setGeometry(QtCore.QRect(420, 100, 431, 491))
-        self.listWidget_path.setObjectName("listWidget_path")
         self.pushButton = QtWidgets.QPushButton(parent=self.dockWidgetContents)
         self.pushButton.setGeometry(QtCore.QRect(700, 600, 141, 51))
         self.pushButton.setObjectName("pushButton")
@@ -50,10 +46,27 @@ class Ui_Drive(object):
         self.comboBox_movepath = QtWidgets.QComboBox(parent=self.dockWidgetContents)
         self.comboBox_movepath.setGeometry(QtCore.QRect(10, 610, 671, 31))
         self.comboBox_movepath.setObjectName("comboBox_movepath")
+        self.tableWidget = QtWidgets.QTableWidget(parent=self.dockWidgetContents)
+        self.tableWidget.setGeometry(QtCore.QRect(10, 90, 871, 501))
+        self.tableWidget.setObjectName("tableWidget")
+        self.tableWidget.setColumnCount(4)
+        self.tableWidget.setRowCount(100)
         Drive.setWidget(self.dockWidgetContents)
+        self.scan_button.clicked.connect(self.button_click)
+
+
 
         self.retranslateUi(Drive)
         QtCore.QMetaObject.connectSlotsByName(Drive)
+
+        self.comboBox.addItem("Select your drive")
+        list = partition_list()
+        self.comboBox.addItems(list)
+
+    def button_click(self):
+        selected_drive = self.comboBox.currentText()
+        print(selected_drive)
+        pass
 
     def retranslateUi(self, Drive):
         _translate = QtCore.QCoreApplication.translate
