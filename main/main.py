@@ -7,6 +7,8 @@
 
 
 from PyQt6 import QtCore, QtGui, QtWidgets
+from PyQt6.QtWidgets import QApplication, QMainWindow, QTableWidget, QTableWidgetItem
+
 import os
 import re
 def partition_list():
@@ -19,7 +21,7 @@ def partition_list():
     return partition_list
 def file_list(drive):
     user_name = os.getlogin()
-    path = f"{drive}\\Users\\{user_name}\\AppData"
+    path = f"{drive}:\\Users\\{user_name}\\AppData\\test\\"
 
     def convert_bytes_to_gb(bytes):
         gb = bytes / (1024 ** 3)  # 1024 bytes = 1 kilobyte, 1024 kilobytes = 1 megabyte, 1024 megabytes = 1 gigabyte
@@ -27,7 +29,8 @@ def file_list(drive):
 
     def list_files_by_size(directory):
         files = []
-        for root, _, filenames in os.walk(directory):
+
+        for root, dir, filenames in os.walk(directory):
             for filename in filenames:
                 filepath = os.path.join(root, filename)
                 if os.path.isfile(filepath):
@@ -35,17 +38,18 @@ def file_list(drive):
                     files.append((filepath, filesize))
 
         files.sort(key=lambda x: x[1])
+
         return files
 
     if __name__ == "__main__":
-        files = list_files_by_size(path)
+        c_drive_directory = path
+        files = list_files_by_size(c_drive_directory)
 
         print("Files on C drive sorted by size:")
         for file, size in files:
             size_gb = convert_bytes_to_gb(size)
-            print(f"{file}: {size_gb:.2f} GB")
-
-
+            # print(f"{file}: {size_gb:.2f} GB")
+        return files
 
 class Ui_Drive(object):
     def setupUi(self, Drive):
@@ -94,7 +98,18 @@ class Ui_Drive(object):
     def button_click(self):
         selected_drive = self.comboBox.currentText()
         print(selected_drive)
-        pass
+        file_name = file_list(str(selected_drive))
+        self.tableWidget.setRowCount(len(file_name))
+
+        chkBoxItem = QTableWidgetItem()
+        chkBoxItem.setFlags(chkBoxItem.flags() | QtCore.Qt.ItemIsUserCheckable)
+        chkBoxItem.setCheckState(QtCore.Qt.Unchecked)
+        self.tableWidget.setItem(1, 1, chkBoxItem)
+        for row, value in enumerate(file_name):
+            print(value)
+            item = QTableWidgetItem(str(value))
+
+
 
     def retranslateUi(self, Drive):
         _translate = QtCore.QCoreApplication.translate
