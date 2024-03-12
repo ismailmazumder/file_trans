@@ -7,8 +7,8 @@
 
 
 from PyQt6 import QtCore, QtGui, QtWidgets
-from PyQt6.QtWidgets import QApplication, QMainWindow, QTableWidget, QTableWidgetItem
-
+from PyQt6.QtWidgets import QApplication, QMainWindow, QTableWidget, QTableWidgetItem,QApplication, QTableWidget, QTableWidgetItem, QWidget, QVBoxLayout, QCheckBox
+from PyQt6.QtCore import  Qt
 import os
 import re
 def partition_list():
@@ -100,14 +100,15 @@ class Ui_Drive(object):
         print(selected_drive)
         file_name = file_list(str(selected_drive))
         self.tableWidget.setRowCount(len(file_name))
-
         chkBoxItem = QTableWidgetItem()
-        chkBoxItem.setFlags(chkBoxItem.flags() | QtCore.Qt.ItemIsUserCheckable)
+        chkBoxItem.setFlags(chkBoxItem.setFlags() | QtCore.Qt.ItemIsUserCheckable)
         chkBoxItem.setCheckState(QtCore.Qt.Unchecked)
         self.tableWidget.setItem(1, 1, chkBoxItem)
+
+        # self.tableWidget.setItem(1, 1, chkBoxItem)
         for row, value in enumerate(file_name):
             print(value)
-            item = QTableWidgetItem(str(value))
+            # item = QTableWidgetItem(str(value))
 
 
 
